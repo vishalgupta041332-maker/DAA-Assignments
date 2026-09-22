@@ -1,1 +1,155 @@
+# 704 – Binary Search
+class Solution {
+    public int search(int[] nums, int target) {
+        int left = 0, right = nums.length - 1;
+        
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            
+            if (nums[mid] == target) {
+                return mid;
+            } else if (nums[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        
+        return -1;
+    }
+}
 
+# 35 – Search Insert Position
+class Solution 
+{
+    public int[] searchRange(int[] nums, int target) 
+    {
+        int first = -1, last = -1;
+        for (int i = 0; i < nums.length; i++) 
+        {
+            if (nums[i] == target) 
+            {
+                if (first == -1) 
+                {
+                    first = i;
+                }
+                last = i;
+            }
+        }
+        return new int[]{first, last};
+    }
+}
+
+# 74 – Search a 2D Matrix
+class Solution 
+{
+    public boolean searchMatrix(int[][] matrix, int target) 
+    {
+
+        int row = matrix.length;
+        int col = matrix[0].length;
+
+        int s = 0;
+        int e = row * col - 1;
+
+        while(s <= e)
+        {
+
+            int mid = s + (e - s) / 2;
+
+            int r = mid / col;
+            int c = mid % col;
+
+            int val = matrix[r][c];
+
+            if(val == target)
+            {
+                return true;
+            }
+            else if(val < target)
+            {
+                s = mid + 1;
+            }
+            else
+            {
+                e = mid - 1;
+            }
+        }
+
+        return false;
+    }
+}
+
+# 33 – Search in Rotated Sorted Array
+class Solution 
+{
+    public int findPeakElement(int[] nums) 
+    {
+        int left = 0, right = nums.length - 1;
+        
+        while (left < right) 
+        {
+            int mid = left + (right - left) / 2;
+            
+            if (nums[mid] < nums[mid + 1]) 
+            {
+                left = mid + 1;
+            } 
+            else 
+            {
+                right = mid;
+            }
+        }
+        
+        return left;
+    }
+}
+
+# 162 – Find Peak Element
+class Solution
+{
+    public double findMedianSortedArrays(int[] nums1, int[] nums2)
+    {
+        if (nums1.length > nums2.length)
+        {
+            return findMedianSortedArrays(nums2, nums1);
+        }
+
+        int m = nums1.length, n = nums2.length;
+        int left = 0, right = m;
+
+        while (left <= right)
+        {
+            int partition1 = (left + right) / 2;
+            int partition2 = (m + n + 1) / 2 - partition1;
+
+            int maxLeft1 = (partition1 == 0) ? Integer.MIN_VALUE : nums1[partition1 - 1];
+            int minRight1 = (partition1 == m) ? Integer.MAX_VALUE : nums1[partition1];
+
+            int maxLeft2 = (partition2 == 0) ? Integer.MIN_VALUE : nums2[partition2 - 1];
+            int minRight2 = (partition2 == n) ? Integer.MAX_VALUE : nums2[partition2];
+
+            if (maxLeft1 <= minRight2 && maxLeft2 <= minRight1)
+            {
+                if ((m + n) % 2 == 0)
+                {
+                    return (Math.max(maxLeft1, maxLeft2) + Math.min(minRight1, minRight2)) / 2.0;
+                }
+                else
+                {
+                    return Math.max(maxLeft1, maxLeft2);
+                }
+            }
+            else if (maxLeft1 > minRight2)
+            {
+                right = partition1 - 1;
+            }
+            else
+            {
+                left = partition1 + 1;
+            }
+        }
+
+        throw new IllegalArgumentException();
+    }
+}
