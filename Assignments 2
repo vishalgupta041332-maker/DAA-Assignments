@@ -1,1 +1,142 @@
+# 88 – Merge Sorted Array																								
+class Solution 
+{
+    public void merge(int[] nums1, int m, int[] nums2, int n) 
+    {
+        int p1 = m-1 , p2 = n-1 ,i = m+n-1;
+        while(p2 >=0 )
+        {
+            if(p1 >=0 && nums1[p1] > nums2[p2])
+            {
+                nums1[i--] = nums1[p1--];
+            } 
+            else
+            {
+                nums1[i--] = nums2[p2--];
+            }
+        }
+       }
+}
 
+# 912 – Sort an Array																							
+class Solution {
+    public int[] sortArray(int[] nums) {
+        mergeSort(nums, 0, nums.length - 1);
+        return nums;
+    }
+    
+    private void mergeSort(int[] nums, int left, int right) {
+        if (left >= right) return;
+        
+        int mid = left + (right - left) / 2;
+        mergeSort(nums, left, mid);
+        mergeSort(nums, mid + 1, right);
+        merge(nums, left, mid, right);
+    }
+    
+    private void merge(int[] nums, int left, int mid, int right) {
+        int[] temp = new int[right - left + 1];
+        int i = left, j = mid + 1, k = 0;
+        
+        while (i <= mid && j <= right) {
+            if (nums[i] <= nums[j]) {
+                temp[k++] = nums[i++];
+            } else {
+                temp[k++] = nums[j++];
+            }
+        }
+        
+        while (i <= mid) temp[k++] = nums[i++];
+        while (j <= right) temp[k++] = nums[j++];
+        
+        for (int p = 0; p < temp.length; p++) {
+            nums[left + p] = temp[p];
+        }
+    }
+}
+
+
+# 215 – Kth Largest Element in an Array																								
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+        
+        for (int num : nums) {
+            minHeap.add(num);
+            if (minHeap.size() > k) {
+                minHeap.poll();
+            }
+        }
+        
+        return minHeap.peek();
+    }
+}
+
+
+# 53 – Maximum Subarray																								
+class Solution 
+{
+    public int maxSubArray(int[] nums) 
+    {
+        int currentSum = nums[0];
+        int maxSum = nums[0];
+        
+        for (int i = 1; i < nums.length; i++) 
+        {
+            currentSum = Math.max(nums[i], currentSum + nums[i]);
+            maxSum = Math.max(maxSum, currentSum);
+        }
+        
+        return maxSum;
+    }
+}
+
+
+# 4 – Median of Two Sorted Arrays	
+class Solution
+{
+    public double findMedianSortedArrays(int[] nums1, int[] nums2)
+    {
+        if (nums1.length > nums2.length)
+        {
+            return findMedianSortedArrays(nums2, nums1);
+        }
+
+        int m = nums1.length, n = nums2.length;
+        int left = 0, right = m;
+
+        while (left <= right)
+        {
+            int partition1 = (left + right) / 2;
+            int partition2 = (m + n + 1) / 2 - partition1;
+
+            int maxLeft1 = (partition1 == 0) ? Integer.MIN_VALUE : nums1[partition1 - 1];
+            int minRight1 = (partition1 == m) ? Integer.MAX_VALUE : nums1[partition1];
+
+            int maxLeft2 = (partition2 == 0) ? Integer.MIN_VALUE : nums2[partition2 - 1];
+            int minRight2 = (partition2 == n) ? Integer.MAX_VALUE : nums2[partition2];
+
+            if (maxLeft1 <= minRight2 && maxLeft2 <= minRight1)
+            {
+                if ((m + n) % 2 == 0)
+                {
+                    return (Math.max(maxLeft1, maxLeft2) + Math.min(minRight1, minRight2)) / 2.0;
+                }
+                else
+                {
+                    return Math.max(maxLeft1, maxLeft2);
+                }
+            }
+            else if (maxLeft1 > minRight2)
+            {
+                right = partition1 - 1;
+            }
+            else
+            {
+                left = partition1 + 1;
+            }
+        }
+
+        throw new IllegalArgumentException();
+    }
+}
